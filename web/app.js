@@ -48,8 +48,11 @@ function announce(msg) {
 /* ---------- paint ---------- */
 function paint(initial) {
   const gen = new Date(DATA.generatedAt);
-  document.getElementById("generated").textContent =
-    "Updated " + gen.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
+  const ageMin = Math.max(0, Math.round((Date.now() - gen.getTime()) / 60000));
+  const gEl = document.getElementById("generated");
+  gEl.textContent =
+    `Snapshot ${ageMin} min old · ${gen.toLocaleString("en-US", { timeStyle: "short" })}`;
+  gEl.classList.toggle("stale", ageMin > 40);
   renderKpis(initial);
   renderTicker();
   renderCategoryChips();
@@ -176,9 +179,11 @@ function eventCard(e) {
       : "";
 
   const flags = (e.flags || [])
-    .filter((f) => f !== "price-data-unavailable")
     .map((f) => `<span class="flag ${f}">${f.replace(/-/g, " ")}</span>`)
     .join("");
+  const barNote = e.binary
+    ? ""
+    : `<p class="bar-note">Per-outcome YES prices — independent sub-markets, may not sum to 100%.</p>`;
 
   const news =
     e.news && e.news.length
@@ -199,6 +204,7 @@ function eventCard(e) {
       ${leadBlock(e)}
     </div>
     <div class="bars">${bars}</div>
+    ${barNote}
     ${moreCount > 0 ? `<p class="more">+${moreCount} more outcomes in this event</p>` : ""}
     ${movers}
     <div class="stats">
@@ -209,7 +215,7 @@ function eventCard(e) {
       <span>Resolves <b>${days}</b></span>
     </div>
     <div class="flags">${flags}</div>
-    <div class="news"><h4>News driving this event</h4>${news}</div>
+    <div class="news"><h4>Related headlines · Google News (keyword-matched, not curated)</h4>${news}</div>
   </article>`;
 }
 

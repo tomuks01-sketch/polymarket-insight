@@ -223,6 +223,8 @@ body::before {
 .wk.up { color: var(--up); } .wk.down { color: var(--down); }
 
 .more { font-size: 0.73rem; color: var(--muted); margin-top: 0.3rem; }
+.bar-note { font-size: 0.68rem; color: var(--muted); margin-top: 0.35rem; font-style: italic; }
+.flag.price-data-unavailable { color: var(--muted); border-color: var(--line); background: var(--s2); }
 
 .movers {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
