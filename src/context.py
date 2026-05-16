@@ -132,10 +132,18 @@ def _llm(event_title: str, headlines: list[dict]) -> str | None:
         with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_S) as r:
             data = json.loads(r.read().decode("utf-8"))
     except (urllib.error.URLError, TimeoutError, ValueError) as exc:
-        # HTTP status only (e.g. 400/401/429) — never the key or body.
+        # HTTP status only — never the key. Also capture the provider's own
+        # error CODE (e.g. "model_terms_required") which is safe (no secret).
         code = getattr(exc, "code", "net")
         STATS[f"http_{code}"] = STATS.get(f"http_{code}", 0) + 1
         STATS["http_error"] += 1
+        try:
+            err = json.loads(exc.read().decode("utf-8")).get("error", {})
+            tag = str(err.get("code") or err.get("type") or "")[:40]
+            tag = re.sub(r"[^a-zA-Z0-9_]", "_", tag) or "unknown"
+            STATS[f"err_{tag}"] = STATS.get(f"err_{tag}", 0) + 1
+        except (AttributeError, ValueError, TypeError):
+            pass
         if code == 429:  # quota hit — stop further calls this run
             _RATE_LIMITED = True
         return None
