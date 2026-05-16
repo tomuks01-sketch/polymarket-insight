@@ -22,6 +22,7 @@ from fetch_markets import (
 )
 from crypto import build_cross_signals, fetch_macro, fetch_top_coins
 from ledger import load_ledger, open_calls, resolve_pending, save_ledger
+from context import build_context, llm_enabled
 from model import MODEL_VERSION, evaluate
 from news import fetch_headlines, topic_from_question
 from price_history import fetch_price_move, move_flags, parse_token_ids
@@ -131,6 +132,7 @@ def main() -> None:
         if g and g.volume >= MIN_EVENT_VOLUME
     ]
     selected = select_balanced(groups)
+    _LLM = llm_enabled()  # True only if GEMINI_API_KEY secret is set
 
     events_out = []
     for i, g in enumerate(selected):
@@ -162,12 +164,16 @@ def main() -> None:
             flags.append("price-data-unavailable")
 
         news = []
+        context = None
         if i < NEWS_FOR_TOP:
             for h in fetch_headlines(topic_from_question(g.title), limit=4):
                 news.append(
                     {"title": h.title, "source": h.source, "link": h.link}
                 )
             time.sleep(0.4)
+            # Subordinate, fail-open. Tier B (Gemini) only on the top 6 events
+            # and only if GEMINI_API_KEY secret exists; else keyless Tier A.
+            context = build_context(g.title, news, use_llm=_LLM and i < 6)
 
         events_out.append(
             {
@@ -189,6 +195,7 @@ def main() -> None:
                 "movers": movers,
                 "flags": flags,
                 "news": news,
+                "context": context,
             }
         )
 

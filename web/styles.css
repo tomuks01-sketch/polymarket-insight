@@ -272,6 +272,19 @@ body::before {
 .modelline a { color: var(--sapphire); text-decoration: none; }
 .modelline a:hover { color: var(--champagne); }
 
+.ctxline {
+  margin-top: 0.6rem; font-size: 0.78rem; color: var(--text);
+  line-height: 1.5; border-left: 2px solid var(--line-soft); padding-left: 0.7rem;
+}
+.ctxline .ctxlabel {
+  display: block; font-family: var(--mono); font-size: 0.64rem;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+.ctxline .ctxsrc { color: var(--muted); }
+.ctxline .ctxsrc a { color: var(--sapphire); text-decoration: none; }
+.ctxline .ctxsrc a:hover { color: var(--champagne); }
+
 .news { margin-top: 0.85rem; border-top: 1px dashed var(--line); padding-top: 0.7rem; }
 .news h4 { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.45rem; }
 .news ul { list-style: none; display: grid; gap: 0.35rem; }

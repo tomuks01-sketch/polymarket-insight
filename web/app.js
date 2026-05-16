@@ -193,6 +193,19 @@ function leadBlock(e) {
   </div>`;
 }
 
+function contextLine(e) {
+  const c = e.context;
+  if (!c || !c.summary) return "";
+  const src = (c.sources || [])
+    .map((s) => `<a href="${safeUrl(s.link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.name)}</a>`)
+    .join(" · ");
+  const prov = c.tier === "B"
+    ? "AI-summarised from news · may be wrong, check sources"
+    : "from news headlines";
+  return `<p class="ctxline"><span class="ctxlabel">Context · ${prov}</span>
+    ${escapeHtml(c.summary)}${src ? ` <span class="ctxsrc">${src}</span>` : ""}</p>`;
+}
+
 function modelLine(e) {
   const m = e.model;
   if (!m || m.prob == null) return "";
@@ -267,6 +280,7 @@ function eventCard(e) {
     </div>
     <div class="flags">${flags}</div>
     ${modelLine(e)}
+    ${contextLine(e)}
     <div class="news"><h4>Related headlines · Google News (keyword-matched, not curated)</h4>${news}</div>
   </article>`;
 }
