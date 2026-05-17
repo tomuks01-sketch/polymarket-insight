@@ -39,6 +39,10 @@ MIN_EVENT_VOLUME = 50_000
 MAX_OUTCOMES = 8                     # bars shown per multi-outcome event
 NEWS_FOR_TOP = 10                    # news only for the highest-volume events
 MOVE_WEEK_THRESHOLD = 0.05           # |1w price change| to count as a mover
+# Below this, refuse to overwrite data.json: a broken/empty upstream must
+# fail the run loudly (last good snapshot stays live) rather than silently
+# publish a truncated board as if the pipeline were healthy.
+MIN_EVENTS_TO_PUBLISH = 8
 
 
 def _coerce_float(v: object) -> float:
@@ -46,6 +50,28 @@ def _coerce_float(v: object) -> float:
         return float(v)
     except (TypeError, ValueError):
         return 0.0
+
+
+def enough_events(events: list[dict]) -> bool:
+    """Publishable only if enough events were built. Guards against a broken
+    upstream (empty list / error envelope / everything filtered out)
+    silently shipping a near-empty board."""
+    return len(events) >= MIN_EVENTS_TO_PUBLISH
+
+
+def _atomic_write_json(path: Path, obj: object) -> None:
+    """Write JSON via tmp + atomic replace (same pattern as save_ledger).
+    A kill mid-write can never leave a truncated published file."""
+    text = json.dumps(obj, indent=2)
+    json.loads(text)  # validate before any swap
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".json.tmp")
+    try:
+        tmp.write_text(text, encoding="utf-8")
+        tmp.replace(path)
+    except OSError:
+        tmp.unlink(missing_ok=True)  # never leave a half-written tmp behind
+        raise
 
 
 def outcome_label(market: dict) -> str:
@@ -211,6 +237,16 @@ def main() -> None:
             }
         )
 
+    # Honesty guard: refuse to overwrite the live snapshot with a broken,
+    # near-empty board. Failing the run loudly keeps the last good data.json
+    # serving on Pages — never publish "0 events" dressed up as healthy.
+    if not enough_events(events_out):
+        raise SystemExit(
+            f"FATAL: only {len(events_out)} events built "
+            f"(min {MIN_EVENTS_TO_PUBLISH}) — upstream likely degraded. "
+            f"Refusing to overwrite web/data.json; last good snapshot stays live."
+        )
+
     # Subordinate macro-context layer (2 read-only calls, end of run, never
     # blocks the prediction-market board; degrades silently to available=False).
     time.sleep(0.5)
@@ -315,8 +351,7 @@ def main() -> None:
         "kalshi": fetch_kalshi_macro(),
     }
 
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(snapshot, indent=2), encoding="utf-8")
+    _atomic_write_json(OUTPUT, snapshot)
     print(
         f"Wrote {OUTPUT} ({len(events_out)} events, "
         f"{len(categories)} categories) | Ledger: +{opened} opened, "

@@ -3,12 +3,19 @@ run with `python tests/test_core.py`. Covers the integrity-critical core:
 model bounds, ledger dedup, terminal-outcome mapping.
 """
 
+import json
 import pathlib
 import sys
+import tempfile
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 
-from ledger import _terminal_outcome, open_calls  # noqa: E402
+from generate_snapshot import (  # noqa: E402
+    MIN_EVENTS_TO_PUBLISH,
+    _atomic_write_json,
+    enough_events,
+)
+from ledger import _terminal_outcome, open_calls, resolve_pending  # noqa: E402
 from model import evaluate  # noqa: E402
 
 
@@ -46,8 +53,47 @@ def test_terminal_outcome() -> None:
     assert _terminal_outcome({"closed": False, "outcomePrices": ["1", "0"]}) is None
 
 
+def test_enough_events_guard() -> None:
+    # Too few events must be rejected so a broken upstream never publishes
+    # an empty/truncated board as if the pipeline were healthy.
+    assert enough_events(list(range(MIN_EVENTS_TO_PUBLISH))) is True
+    assert enough_events(list(range(MIN_EVENTS_TO_PUBLISH + 5))) is True
+    assert enough_events([]) is False
+    assert enough_events(list(range(MIN_EVENTS_TO_PUBLISH - 1))) is False
+
+
+def test_atomic_write_json() -> None:
+    payload = {"a": 1, "nested": {"b": [1, 2, 3]}, "u": "ąčę"}
+    with tempfile.TemporaryDirectory() as d:
+        target = pathlib.Path(d) / "out.json"
+        _atomic_write_json(target, payload)
+        assert json.loads(target.read_text(encoding="utf-8")) == payload
+        # No stray temp file left behind after a successful swap.
+        assert not (pathlib.Path(d) / "out.json.tmp").exists()
+        # Overwrite path also works (replace, not append).
+        _atomic_write_json(target, {"a": 2})
+        assert json.loads(target.read_text(encoding="utf-8")) == {"a": 2}
+
+
+def test_resolve_pending_budget() -> None:
+    # An already-expired budget must short-circuit BEFORE any network call
+    # and leave PENDING entries untouched (retried next run).
+    led = {"version": 1, "entries": [
+        {"conditionId": "0xPEND", "status": "PENDING", "openedAt": "2099-01-01",
+         "modelProb": 0.6, "crowdProbAtCallTime": 0.5},
+    ]}
+    resolved, voided = resolve_pending(led, budget_s=-1.0)
+    assert (resolved, voided) == (0, 0)
+    assert led["entries"][0]["status"] == "PENDING"
+    # No-pending case still returns cleanly (regression guard).
+    assert resolve_pending({"version": 1, "entries": []}) == (0, 0)
+
+
 if __name__ == "__main__":
     test_model_bounds()
     test_ledger_dedup()
     test_terminal_outcome()
+    test_enough_events_guard()
+    test_atomic_write_json()
+    test_resolve_pending_budget()
     print("ALL CORE TESTS PASSED")

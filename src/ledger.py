@@ -14,6 +14,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -25,6 +27,11 @@ LEDGER = Path(__file__).resolve().parent.parent / "web" / "ledger.json"
 ARCHIVE_DIR = Path(__file__).resolve().parent.parent / "web" / "ledger-archive"
 GAMMA_MARKETS = "https://gamma-api.polymarket.com/markets"
 REQUEST_TIMEOUT_S = 20
+# Wall-clock cap for the whole pending-resolution sweep. As the ledger grows
+# this loop is dozens of serial 20s-timeout calls; without a bound a slow
+# Gamma API can hang the 24/7 job. Unresolved batches stay PENDING and are
+# retried next run (already the transient-failure semantics below).
+RESOLVE_BUDGET_S = 120
 
 STALE_VOID_DAYS = 90  # unresolved this long after open -> VOID (cannot rot)
 SAMPLE_NOTE = (
@@ -160,14 +167,24 @@ def _terminal_outcome(market: dict) -> int | None:
     return None  # 0.5 / disputed / non-terminal -> caller VOIDs
 
 
-def resolve_pending(ledger: dict) -> tuple[int, int]:
+def resolve_pending(
+    ledger: dict, budget_s: float = RESOLVE_BUDGET_S
+) -> tuple[int, int]:
     pend = [e for e in ledger["entries"] if e["status"] == "PENDING"]
     if not pend:
         return (0, 0)
     by_cid = {e["conditionId"]: e for e in pend}
     resolved = voided = 0
     ids = list(by_cid)
+    deadline = time.monotonic() + budget_s
     for i in range(0, len(ids), 15):
+        if time.monotonic() > deadline:
+            print(
+                f"WARN ledger: resolve budget ({budget_s:.0f}s) hit; "
+                f"{len(ids) - i} ids left PENDING, retried next run",
+                file=sys.stderr,
+            )
+            break
         batch = ids[i : i + 15]
         try:
             mkts = _get(f"{GAMMA_MARKETS}?condition_ids={','.join(batch)}")
