@@ -62,6 +62,26 @@
       "modelBrier": null,
       "marketBrier": null,
       "voidReason": null
+    },
+    {
+      "callId": "980ecf9a61d3fff7",
+      "conditionId": "0x518a5b030b205706b8ffe6bbad9bd3de59548348e5c0471827f5de21e513333c",
+      "marketId": "1809560",
+      "eventSlug": "strait-of-hormuz-traffic-returns-to-normal-by-end-of-may",
+      "eventTitle": "Strait of Hormuz traffic returns to normal by end of May?",
+      "category": "transit",
+      "question": "Strait of Hormuz traffic returns to normal by end of May?",
+      "modelVersion": "baseline-v1",
+      "modelProb": 0.1087,
+      "crowdProbAtCallTime": 0.0515,
+      "divergencePp": 5.7,
+      "openedAt": "2026-05-17T09:43:28.460583+00:00",
+      "status": "PENDING",
+      "resolvedAt": null,
+      "resolvedOutcome": null,
+      "modelBrier": null,
+      "marketBrier": null,
+      "voidReason": null
     }
   ]
 }
