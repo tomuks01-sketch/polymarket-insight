@@ -56,7 +56,6 @@ function paint(initial) {
   renderKpis(initial);
   renderEditorial();
   renderMacro();
-  renderTicker();
   renderCategoryChips();
   const y = window.scrollY;
   const focusInBoard = document.activeElement &&
@@ -178,20 +177,6 @@ function renderMacro() {
       ).join("") + `</div>`;
   }
   el.innerHTML = html;
-}
-
-function renderTicker() {
-  const items = [];
-  DATA.events.forEach((e) =>
-    (e.movers || []).forEach((m) =>
-      items.push(`<span><b>${escapeHtml(m.label)}</b> ${m.weekChange > 0 ? '<i class="u">▲</i>' : '<i class="d">▼</i>'} ${(Math.abs(m.weekChange) * 100).toFixed(1)}pp · ${escapeHtml(e.category)}</span>`)
-    )
-  );
-  const track = document.getElementById("tickerTrack");
-  if (!items.length) { document.getElementById("ticker").style.display = "none"; return; }
-  document.getElementById("ticker").style.display = "";
-  const seq = items.join("");
-  track.innerHTML = REDUCED ? seq : seq + seq; // duplicate for seamless loop
 }
 
 function renderCategoryChips() {

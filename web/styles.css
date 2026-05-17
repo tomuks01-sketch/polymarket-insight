@@ -77,52 +77,16 @@ body::before {
 .masthead h1 { font-size: clamp(1.5rem, 1rem + 2.4vw, 2.5rem); font-weight: 800; letter-spacing: -0.035em; }
 .masthead h1 em { font-style: normal; color: var(--champagne); }
 .tagline { color: var(--muted); font-size: 0.92rem; margin-top: 0.15rem; }
-.status { display: flex; align-items: center; gap: 0.9rem; padding-bottom: 0.2rem; }
-.live {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em;
-  color: var(--up); font-family: var(--mono);
+/* Quiet snapshot meta — whispers, does not compete with the brand */
+.snapmeta {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+  padding-bottom: 0.2rem; align-self: flex-end;
 }
-.live i {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--up);
-  box-shadow: 0 0 10px var(--up); animation: pulse 2s var(--ease) infinite;
-}
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.4; }
-}
-.briefs-link {
-  display: inline-block; color: var(--champagne); text-decoration: none;
-  font-size: 0.8rem; font-weight: 650; border: 1px solid oklch(86% 0.06 92 / 0.35);
-  background: oklch(86% 0.06 92 / 0.08); padding: 0.35rem 0.7rem; border-radius: 999px;
-  transition: background .2s var(--ease);
-}
-.briefs-link:hover { background: oklch(86% 0.06 92 / 0.16); }
-.meta { font-size: 0.76rem; color: var(--muted); font-family: var(--mono); }
-.meta.stale { color: var(--hot); }
-
-/* ---------- Ticker ---------- */
-.ticker {
-  margin: 1.1rem 0 0.4rem; overflow: hidden; border: 1px solid var(--line-soft);
-  border-radius: 12px; background: var(--glass); backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-.ticker-track {
-  display: flex; gap: 2.4rem; white-space: nowrap; padding: 0.55rem 1rem;
-  width: max-content; animation: marquee 60s linear infinite;
-}
-.ticker:hover .ticker-track { animation-play-state: paused; }
-.ticker-track span { font-size: 0.8rem; font-family: var(--mono); color: var(--muted); }
-.ticker-track b { color: var(--text); font-weight: 650; }
-.ticker-track .u { color: var(--up); }
-.ticker-track .d { color: var(--down); }
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+.snapmeta .live { color: var(--muted); font-weight: 700; letter-spacing: 0.08em; }
+.snapmeta #generated.stale { color: var(--hot); }
 
 /* ---------- KPIs ---------- */
-.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin: 1rem 0 1.3rem; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin: 1rem 0; }
 .kpi {
   background: var(--glass); -webkit-backdrop-filter: blur(10px) saturate(140%);
   backdrop-filter: blur(10px) saturate(140%);
@@ -136,7 +100,7 @@ body::before {
 .kpi.sap .v { color: var(--sapphire); }
 
 /* ---------- Filters ---------- */
-.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.1rem 0 0.5rem; }
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.9rem 0 0.5rem; }
 .filters.subtle { margin: 0.4rem 0 1.4rem; }
 .chip {
   background: var(--s1); color: var(--muted);
@@ -314,7 +278,7 @@ body::before {
 @keyframes fdn { 0% { background: oklch(66% 0.18 25 / 0.18); } 100% { background: var(--glass); } }
 
 /* ---------- Editorial hybrid front ---------- */
-#editorial { margin: 1.3rem 0 0.6rem; display: grid; gap: 0.7rem; }
+#editorial { margin: 1.4rem 0 1rem; display: grid; gap: 0.7rem; }
 #editorial[hidden] { display: none; }
 .sb-pulse {
   display: block; text-decoration: none;
@@ -497,6 +461,5 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .aurora { animation: none; }
-  .ticker-track { animation: none; transform: none; white-space: normal; flex-wrap: wrap; }
   .event { will-change: auto; }
 }

@@ -22,7 +22,16 @@
 <body>
 <div class="aurora" aria-hidden="true"></div>
 
-<header class="masthead">
+<header class="sitenav">
+  <a class="wm" href="./">THE <span>CALIBRATION</span></a>
+  <nav>
+    <a href="./" aria-current="page">Terminal</a>
+    <a href="briefs/">Briefs</a>
+    <a href="scoreboard/">Scoreboard</a>
+  </nav>
+</header>
+
+<div class="masthead">
   <div class="brand">
     <span class="dot" aria-hidden="true"></span>
     <div>
@@ -30,13 +39,11 @@
       <p class="tagline">Delayed-snapshot probability, odds &amp; momentum — Polymarket public data, read-only.</p>
     </div>
   </div>
-  <div class="status">
-    <a class="briefs-link" href="briefs/">📈 The Crowd Signal — briefs →</a>
-    <a class="briefs-link" href="scoreboard/">📊 The Scoreboard — scored calls →</a>
-    <span class="live" title="Data is a snapshot refreshed about every 30 minutes — not real-time"><i></i> DELAYED ~30m</span>
-    <span id="generated" class="meta">loading…</span>
-  </div>
-</header>
+  <p class="snapmeta">
+    <span class="live" title="Data is a snapshot refreshed periodically — not real-time">DELAYED</span>
+    · <span id="generated">loading…</span>
+  </p>
+</div>
 
 <div id="refresh-status" role="status" aria-live="polite" class="sr-only"></div>
 
@@ -45,9 +52,9 @@
   <article id="latest-brief" class="latest-brief" hidden></article>
 </section>
 
-<div class="ticker" id="ticker" aria-hidden="true"><div class="ticker-track" id="tickerTrack"></div></div>
-
 <section class="kpis" id="kpis" aria-label="Market overview"></section>
+
+<div id="macro" class="macro" hidden></div>
 
 <nav class="filters" id="categories" aria-label="Category filters"></nav>
 <nav class="filters subtle" id="signals" aria-label="Signal filters">
@@ -58,8 +65,6 @@
   <button class="chip" data-flag="high-attention">🔥 High attention</button>
   <button class="chip" data-flag="resolves-soon">⏱ Resolving soon</button>
 </nav>
-
-<div id="macro" class="macro" hidden></div>
 
 <main id="board" class="board"></main>
 
