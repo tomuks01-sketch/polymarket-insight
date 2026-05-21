@@ -122,6 +122,26 @@
       "modelBrier": null,
       "marketBrier": null,
       "voidReason": null
+    },
+    {
+      "callId": "2da688a6a4e176c3",
+      "conditionId": "0x8213d395e079614d6c4d7f4cbb9be9337ab51648a21cc2a334ae8f1966d164b4",
+      "marketId": "824952",
+      "eventSlug": "microstrategy-sell-any-bitcoin-in-2025",
+      "eventTitle": "MicroStrategy sells any Bitcoin by ___ ?",
+      "category": "Economy",
+      "question": "MicroStrategy sells any Bitcoin by December 31, 2026?",
+      "modelVersion": "baseline-v1",
+      "modelProb": 0.8437,
+      "crowdProbAtCallTime": 0.795,
+      "divergencePp": 4.9,
+      "openedAt": "2026-05-21T21:10:07.004229+00:00",
+      "status": "PENDING",
+      "resolvedAt": null,
+      "resolvedOutcome": null,
+      "modelBrier": null,
+      "marketBrier": null,
+      "voidReason": null
     }
   ]
 }
