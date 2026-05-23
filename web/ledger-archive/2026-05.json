@@ -142,6 +142,46 @@
       "modelBrier": null,
       "marketBrier": null,
       "voidReason": null
+    },
+    {
+      "callId": "007b0019584e8240",
+      "conditionId": "0x5db999fad322cea2914535aae5517060c3f80ad6d8c0231cde2124a434d16846",
+      "marketId": "665374",
+      "eventSlug": "will-the-us-invade-iran-before-2027",
+      "eventTitle": "Will the U.S. invade Iran before 2027?",
+      "category": "Geopolitics",
+      "question": "Will the U.S. invade Iran before 2027?",
+      "modelVersion": "baseline-v1",
+      "modelProb": 0.214,
+      "crowdProbAtCallTime": 0.165,
+      "divergencePp": 4.9,
+      "openedAt": "2026-05-23T21:14:26.607913+00:00",
+      "status": "PENDING",
+      "resolvedAt": null,
+      "resolvedOutcome": null,
+      "modelBrier": null,
+      "marketBrier": null,
+      "voidReason": null
+    },
+    {
+      "callId": "45d4ec51417a646c",
+      "conditionId": "0x9c4459a70fd67a346075c22a6b010b454794204f2f28d128983b9056fe8d64b5",
+      "marketId": "898660",
+      "eventSlug": "f1-constructors-champion",
+      "eventTitle": "F1 Constructors' Champion",
+      "category": "Formula 1",
+      "question": "Will Mercedes be the 2026 F1 Constructors' Champion?",
+      "modelVersion": "baseline-v1",
+      "modelProb": 0.8132,
+      "crowdProbAtCallTime": 0.855,
+      "divergencePp": -4.2,
+      "openedAt": "2026-05-23T21:14:26.607947+00:00",
+      "status": "PENDING",
+      "resolvedAt": null,
+      "resolvedOutcome": null,
+      "modelBrier": null,
+      "marketBrier": null,
+      "voidReason": null
     }
   ]
 }
