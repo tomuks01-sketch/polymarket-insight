@@ -1,14 +1,14 @@
 {
   "schemaVersion": "fs-v1",
   "weightsVersion": "w-v1",
-  "generatedAt": "2026-05-30T19:48:00.716867+00:00",
+  "generatedAt": "2026-05-30T20:51:04.837992+00:00",
   "records": [
     {
       "assetId": "30829",
       "kind": "PM_MULTI",
       "title": "Democratic Presidential Nominee 2028",
       "category": "World Elections",
-      "horizonDays": 891.2,
+      "horizonDays": 891.1,
       "crowd": {
         "prob": 0.2345,
         "spread": null,
@@ -47,7 +47,7 @@
       "kind": "PM_MULTI",
       "title": "UEFA Champions League Winner ",
       "category": "Soccer",
-      "horizonDays": 0.2,
+      "horizonDays": 0.1,
       "crowd": {
         "prob": 0.9995,
         "spread": null,
@@ -86,7 +86,7 @@
       "kind": "PM_MULTI",
       "title": "US x Iran permanent peace deal by...?",
       "category": "Iran",
-      "horizonDays": 214.2,
+      "horizonDays": 214.1,
       "crowd": {
         "prob": 0.705,
         "spread": null,
@@ -97,8 +97,8 @@
         "available": true
       },
       "baseline": {
-        "prob": 0.754,
-        "gapVsCrowd": 0.049,
+        "prob": 0.7645,
+        "gapVsCrowd": 0.059,
         "signalQuality": "insufficient",
         "source": "model.py",
         "available": true
@@ -125,7 +125,7 @@
       "kind": "PM_MULTI",
       "title": "Brazil Presidential Election",
       "category": "Brazil",
-      "horizonDays": 126.2,
+      "horizonDays": 126.1,
       "crowd": {
         "prob": 0.405,
         "spread": null,
@@ -164,7 +164,7 @@
       "kind": "PM_MULTI",
       "title": "Venezuela leader end of 2026?",
       "category": "Trump-Machado",
-      "horizonDays": 214.2,
+      "horizonDays": 214.1,
       "crowd": {
         "prob": 0.6765,
         "spread": null,
@@ -175,7 +175,7 @@
         "available": true
       },
       "baseline": {
-        "prob": 0.6747,
+        "prob": 0.6746,
         "gapVsCrowd": -0.002,
         "signalQuality": "insufficient",
         "source": "model.py",
@@ -203,7 +203,7 @@
       "kind": "PM_MULTI",
       "title": "Next French Presidential Election",
       "category": "Elections",
-      "horizonDays": 334.2,
+      "horizonDays": 334.1,
       "crowd": {
         "prob": 0.235,
         "spread": null,
@@ -281,7 +281,7 @@
       "kind": "PM_MULTI",
       "title": "Fed Decision in June?",
       "category": "Economic Policy",
-      "horizonDays": 17.2,
+      "horizonDays": 17.1,
       "crowd": {
         "prob": 0.9815,
         "spread": null,
@@ -320,7 +320,7 @@
       "kind": "PM_MULTI",
       "title": "Kharg Island no longer under Iranian control by...?",
       "category": "Khamenei",
-      "horizonDays": -59.8,
+      "horizonDays": -59.9,
       "crowd": {
         "prob": 0.045,
         "spread": null,
@@ -359,7 +359,7 @@
       "kind": "PM_MULTI",
       "title": "Will the US confirm that aliens exist by...?",
       "category": "Culture",
-      "horizonDays": 214.2,
+      "horizonDays": 214.1,
       "crowd": {
         "prob": 0.145,
         "spread": null,
@@ -437,7 +437,7 @@
       "kind": "PM_MULTI",
       "title": "What will WTI Crude Oil (WTI) hit in May 2026?",
       "category": "Finance",
-      "horizonDays": 0.9,
+      "horizonDays": 0.8,
       "crowd": {
         "prob": 1.0,
         "spread": null,
@@ -476,7 +476,7 @@
       "kind": "PM_BINARY",
       "title": "Will the Iranian regime fall by May 31?",
       "category": "Iran Regime",
-      "horizonDays": 0.2,
+      "horizonDays": 0.1,
       "crowd": {
         "prob": 0.0005,
         "spread": null,
@@ -515,9 +515,9 @@
       "kind": "PM_MULTI",
       "title": "2026 Men's French Open Winner",
       "category": "Sports",
-      "horizonDays": 7.2,
+      "horizonDays": 7.1,
       "crowd": {
-        "prob": 0.3755,
+        "prob": 0.3765,
         "spread": null,
         "obImbalance": null,
         "tradeVelocity": null,
@@ -526,8 +526,8 @@
         "available": true
       },
       "baseline": {
-        "prob": 0.2681,
-        "gapVsCrowd": -0.107,
+        "prob": 0.2689,
+        "gapVsCrowd": -0.108,
         "signalQuality": "insufficient",
         "source": "model.py",
         "available": true
@@ -554,7 +554,7 @@
       "kind": "PM_MULTI",
       "title": "MicroStrategy sells any Bitcoin by ___ ?",
       "category": "Economy",
-      "horizonDays": 215.4,
+      "horizonDays": 215.3,
       "crowd": {
         "prob": 0.885,
         "spread": null,
@@ -593,9 +593,9 @@
       "kind": "PM_BINARY",
       "title": "Will Trump acquire Greenland before 2027?",
       "category": "Denmark",
-      "horizonDays": 214.2,
+      "horizonDays": 214.1,
       "crowd": {
-        "prob": 0.0675,
+        "prob": 0.067,
         "spread": null,
         "obImbalance": null,
         "tradeVelocity": null,
@@ -605,7 +605,7 @@
       },
       "baseline": {
         "prob": 0.0679,
-        "gapVsCrowd": 0.0,
+        "gapVsCrowd": 0.001,
         "signalQuality": "insufficient",
         "source": "model.py",
         "available": true
@@ -632,9 +632,9 @@
       "kind": "PM_BINARY",
       "title": "Strait of Hormuz traffic returns to normal by end of May?",
       "category": "transit",
-      "horizonDays": 0.2,
+      "horizonDays": 0.1,
       "crowd": {
-        "prob": 0.004,
+        "prob": 0.0025,
         "spread": null,
         "obImbalance": null,
         "tradeVelocity": null,
@@ -671,7 +671,7 @@
       "kind": "PM_BINARY",
       "title": "Will China invade Taiwan by end of 2026?",
       "category": "Foreign Policy",
-      "horizonDays": 214.2,
+      "horizonDays": 214.1,
       "crowd": {
         "prob": 0.0665,
         "spread": null,
@@ -710,9 +710,9 @@
       "kind": "PM_MULTI",
       "title": "How many Fed rate cuts in 2026?",
       "category": "Business",
-      "horizonDays": 214.2,
+      "horizonDays": 214.1,
       "crowd": {
-        "prob": 0.676,
+        "prob": 0.675,
         "spread": null,
         "obImbalance": null,
         "tradeVelocity": null,
@@ -721,8 +721,8 @@
         "available": true
       },
       "baseline": {
-        "prob": 0.6867,
-        "gapVsCrowd": 0.011,
+        "prob": 0.6853,
+        "gapVsCrowd": 0.01,
         "signalQuality": "insufficient",
         "source": "model.py",
         "available": true
@@ -749,7 +749,7 @@
       "kind": "PM_MULTI",
       "title": "Starmer out by...?",
       "category": "Starmer",
-      "horizonDays": -150.3,
+      "horizonDays": -150.4,
       "crowd": {
         "prob": 0.685,
         "spread": null,
@@ -788,7 +788,7 @@
       "kind": "PM_MULTI",
       "title": "Trump announces US blockade of Hormuz lifted by...?",
       "category": "Strait of Hormuz",
-      "horizonDays": 30.2,
+      "horizonDays": 30.1,
       "crowd": {
         "prob": 0.675,
         "spread": null,
@@ -799,8 +799,8 @@
         "available": true
       },
       "baseline": {
-        "prob": 0.7083,
-        "gapVsCrowd": 0.033,
+        "prob": 0.7275,
+        "gapVsCrowd": 0.052,
         "signalQuality": "insufficient",
         "source": "model.py",
         "available": true
@@ -827,7 +827,7 @@
       "kind": "PM_MULTI",
       "title": "MLB World Series Champion 2026",
       "category": "MLB",
-      "horizonDays": 154.2,
+      "horizonDays": 154.1,
       "crowd": {
         "prob": 0.255,
         "spread": null,
@@ -838,7 +838,7 @@
         "available": true
       },
       "baseline": {
-        "prob": 0.2632,
+        "prob": 0.2633,
         "gapVsCrowd": 0.008,
         "signalQuality": "insufficient",
         "source": "model.py",
@@ -866,7 +866,7 @@
       "kind": "PM_MULTI",
       "title": "US obtains Iranian enriched uranium by...?",
       "category": "Trump",
-      "horizonDays": 214.2,
+      "horizonDays": 214.1,
       "crowd": {
         "prob": 0.215,
         "spread": null,
@@ -905,7 +905,7 @@
       "kind": "PM_MULTI",
       "title": "F1 Constructors' Champion",
       "category": "Formula 1",
-      "horizonDays": 189.2,
+      "horizonDays": 189.1,
       "crowd": {
         "prob": 0.875,
         "spread": null,
@@ -916,8 +916,8 @@
         "available": true
       },
       "baseline": {
-        "prob": 0.8592,
-        "gapVsCrowd": -0.016,
+        "prob": 0.8628,
+        "gapVsCrowd": -0.012,
         "signalQuality": "insufficient",
         "source": "model.py",
         "available": true
