@@ -662,6 +662,21 @@ if (mapEl) {
     const iso = fromPath(ev.target);
     if (iso) { ev.preventDefault(); setPlace(iso === activePlace ? "all" : iso); }
   });
+  // Hover tooltip — country name + live market count, follows the cursor.
+  const tip = document.getElementById("map-tip");
+  mapEl.addEventListener("pointermove", (ev) => {
+    if (!tip) return;
+    const p = ev.target.closest && ev.target.closest("path");
+    const iso = p && p.classList.contains("has") ? (p.id || "").replace("c-", "") : null;
+    const n = iso ? placeCounts()[iso] : 0;
+    if (!n) { tip.hidden = true; return; }
+    const nm = (PLACES.places[iso] && PLACES.places[iso].name) || iso;
+    tip.textContent = `${nm} · ${n} market${n === 1 ? "" : "s"}`;
+    tip.style.left = ev.clientX + "px";
+    tip.style.top = ev.clientY + "px";
+    tip.hidden = false;
+  });
+  mapEl.addEventListener("pointerleave", () => { if (tip) tip.hidden = true; });
 }
 
 loadPlaces();

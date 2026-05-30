@@ -555,6 +555,8 @@ body::before {
 }
 .sb-note { color: var(--muted); font-style: italic; padding: 1rem 0; }
 .sb-sample { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-top: 0.8rem; border-left: 2px solid var(--line); padding-left: 0.7rem; }
+.sb-controls { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; align-items: center; margin: 0.4rem 0 1.1rem; }
+.sb-controls .filters { margin: 0; }
 .sb-entries { display: grid; gap: 0.5rem; }
 .sb-row { background: var(--glass); border: 1px solid var(--line-soft); border-radius: 10px; padding: 0.7rem 0.9rem; }
 .sb-row.resolved { border-left: 3px solid var(--up); }

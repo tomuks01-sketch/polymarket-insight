@@ -46,7 +46,21 @@
 
   <div id="sb" class="sb">loading…</div>
 
-  <h2>Every call (newest first)</h2>
+  <h2>Every call</h2>
+  <div class="sb-controls">
+    <div class="filters" id="sb-sort" aria-label="Sort calls">
+      <button class="chip is-active" data-sort="default">Status</button>
+      <button class="chip" data-sort="newest">Newest</button>
+      <button class="chip" data-sort="oldest">Oldest</button>
+      <button class="chip" data-sort="divergence">Biggest gap</button>
+    </div>
+    <div class="filters subtle" id="sb-status" aria-label="Filter by status">
+      <button class="chip is-active" data-status="all">All</button>
+      <button class="chip" data-status="PENDING">Pending</button>
+      <button class="chip" data-status="RESOLVED">Resolved</button>
+      <button class="chip" data-status="VOID">Void</button>
+    </div>
+  </div>
   <div id="entries" class="sb-entries">loading…</div>
 
   <p class="disclaimer">Baseline statistical model (mean-reversion on weekly
@@ -61,12 +75,59 @@
 </article>
 
 <script>
+let LED = null, sbSort = "default", sbStatus = "all";
 function pctBrier(v){ return v === null || v === undefined ? "—" : v.toFixed(4); }
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+// Reorder/filter ONLY — entries are never altered, hidden permanently, or relabelled.
+function renderEntries(){
+  const el = document.getElementById("entries");
+  if(!el || !LED) return;
+  const order = {RESOLVED:0, PENDING:1, VOID:2};
+  let rows = [...(LED.entries||[])];
+  if(sbStatus !== "all") rows = rows.filter(e=>e.status===sbStatus);
+  const byDateDesc = (a,b)=>(b.openedAt||"").localeCompare(a.openedAt||"");
+  if(sbSort==="newest") rows.sort(byDateDesc);
+  else if(sbSort==="oldest") rows.sort((a,b)=>(a.openedAt||"").localeCompare(b.openedAt||""));
+  else if(sbSort==="divergence") rows.sort((a,b)=>(Math.abs(Number(b.divergencePp)||0))-(Math.abs(Number(a.divergencePp)||0)));
+  else rows.sort((a,b)=>(order[a.status]-order[b.status]) || byDateDesc(a,b));
+  el.innerHTML = rows.length ? rows.map(e=>{
+    const res = e.status==="RESOLVED"
+      ? `outcome ${e.resolvedOutcome} · model ${pctBrier(e.modelBrier)} · crowd ${pctBrier(e.marketBrier)}`
+      : (e.status==="VOID" ? (e.voidReason||"void") : "awaiting resolution");
+    return `<div class="sb-row ${e.status.toLowerCase()}">
+      <div class="sb-q">${escapeHtml(e.question)}</div>
+      <div class="sb-meta">
+        <span class="st">${e.status}</span>
+        <span>model ${(e.modelProb*100).toFixed(0)}% vs crowd ${(e.crowdProbAtCallTime*100).toFixed(0)}%</span>
+        <span>${e.divergencePp>0?"+":""}${e.divergencePp}pp</span>
+        <span>${(e.openedAt||"").slice(0,10)}</span>
+        <span>${res}</span>
+      </div></div>`;
+  }).join("") : `<p class="sb-note">No calls match this filter.</p>`;
+}
+
+function wireControls(){
+  const bind = (id, key) => {
+    const box = document.getElementById(id);
+    if(!box) return;
+    box.addEventListener("click", ev=>{
+      const b = ev.target.closest(".chip"); if(!b) return;
+      box.querySelectorAll(".chip").forEach(c=>c.classList.remove("is-active"));
+      b.classList.add("is-active");
+      if(key==="sort") sbSort = b.dataset.sort; else sbStatus = b.dataset.status;
+      renderEntries();
+    });
+  };
+  bind("sb-sort","sort");
+  bind("sb-status","status");
+}
+
 async function load(){
-  let sb, led;
+  let sb;
   try {
     sb = await (await fetch("../scoreboard.json",{cache:"no-store"})).json();
-    led = await (await fetch("../ledger.json",{cache:"no-store"})).json();
+    LED = await (await fetch("../ledger.json",{cache:"no-store"})).json();
   } catch(e){
     document.getElementById("sb").innerHTML = "Could not load scoreboard data.";
     return;
@@ -94,26 +155,9 @@ async function load(){
        <span>model <b>${sb.modelVersion}</b></span>
      </div>${headline}
      <p class="sb-sample">${sb.sampleNote}</p>`;
-
-  const order = {RESOLVED:0, PENDING:1, VOID:2};
-  const rows = [...led.entries].sort((a,b)=>
-    (order[a.status]-order[b.status]) || (b.openedAt||"").localeCompare(a.openedAt||""));
-  document.getElementById("entries").innerHTML = rows.length ? rows.map(e=>{
-    const res = e.status==="RESOLVED"
-      ? `outcome ${e.resolvedOutcome} · model ${pctBrier(e.modelBrier)} · crowd ${pctBrier(e.marketBrier)}`
-      : (e.status==="VOID" ? (e.voidReason||"void") : "awaiting resolution");
-    return `<div class="sb-row ${e.status.toLowerCase()}">
-      <div class="sb-q">${escapeHtml(e.question)}</div>
-      <div class="sb-meta">
-        <span class="st">${e.status}</span>
-        <span>model ${(e.modelProb*100).toFixed(0)}% vs crowd ${(e.crowdProbAtCallTime*100).toFixed(0)}%</span>
-        <span>${e.divergencePp>0?"+":""}${e.divergencePp}pp</span>
-        <span>${(e.openedAt||"").slice(0,10)}</span>
-        <span>${res}</span>
-      </div></div>`;
-  }).join("") : `<p class="sb-note">No calls logged yet.</p>`;
+  renderEntries();
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+wireControls();
 load();
 </script>
 </body>

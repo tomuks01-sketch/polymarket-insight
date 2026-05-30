@@ -207,6 +207,11 @@
 .geomap-cap { text-align:center; font-family:var(--mono); font-size:0.68rem; color:var(--ink-faint);
   margin-top:0.55rem; line-height:1.4; }
 @media (max-width:560px){ .worldmap{ max-width:none; } }
+.map-tip { position:fixed; z-index:80; transform:translate(-50%,-135%); pointer-events:none;
+  font-family:var(--mono); font-size:0.72rem; color:var(--amber); white-space:nowrap;
+  background:rgba(10,12,16,0.96); border:1px solid rgba(255,180,92,0.35); border-radius:7px;
+  padding:0.3rem 0.55rem; box-shadow:0 8px 20px -8px #000; }
+.map-tip[hidden]{ display:none; }
 @media (prefers-reduced-motion: reduce){ .refresh-scan i{ display:none; } }
 
 .divchart { display:grid; gap:0.42rem; }
@@ -296,6 +301,7 @@
 </head>
 <body class="home">
 <div class="refresh-scan" id="refresh-scan" aria-hidden="true"><i></i></div>
+<div class="map-tip" id="map-tip" role="status" aria-live="polite" hidden></div>
 
 <!-- ======= COMMAND RAIL ======= -->
 <header class="rail">
